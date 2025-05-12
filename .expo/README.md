@@ -1,15 +1,31 @@
-> Why do I have a folder named ".expo" in my project?
+# Service Marketplace BF
 
-The ".expo" folder is created when an Expo project is started using "expo start" command.
+Service Marketplace BF is a mobile application designed to connect users with service providers in Burkina Faso. The app allows users to browse, book, and pay for services such as cleaning, plumbing, and more. It also includes an admin dashboard for managing providers and bookings.
 
-> What do the files contain?
+## Features
 
-- "devices.json": contains information about devices that have recently opened this project. This is used to populate the "Development sessions" list in your development builds.
-- "packager-info.json": contains port numbers and process PIDs that are used to serve the application to the mobile device/simulator.
-- "settings.json": contains the server configuration that is used to serve the application manifest.
+### User Features
+- **Authentication**: Login and register with email and password.
+- **Browse Services**: View a list of available services and providers.
+- **Search and Filter**: Search for services and filter providers by category, rating, or price.
+- **Booking**: Book a service provider with date, time, and address.
+- **Payment**: Choose between payment methods like Orange Money or cash.
+- **Profile Management**: View and edit user profile details.
 
-> Should I commit the ".expo" folder?
+### Admin Features
+- **Dashboard**: View statistics and manage providers, bookings, and users.
+- **Add/Edit Providers**: Add new service providers or update existing ones.
+- **Booking Management**: View and update booking statuses.
 
-No, you should not share the ".expo" folder. It does not contain any information that is relevant for other developers working on the project, it is specific to your machine.
+- **User Management**: View and manage user accounts.
+- **Service Management**: Add, edit, or delete services.
+- **Payment Management**: View and manage payments.
+- **Rating System**: Allow users to rate service providers.
+- **Push Notifications**: Send notifications to users and providers.
+- **Analytics**: View app usage statistics.
+- **Security**: Implement user authentication and authorization.
 
-Upon project creation, the ".expo" folder is already added to your ".gitignore" file.
+how to run the app (not a full app yet)
+1. npm install
+2. npm install expo
+3. npx expo start

@@ -1,0 +1,8 @@
+{
+  "android": {
+    "package": "com.anonymous.servicemarketplacebf"
+  },
+  "ios": {
+    "bundleIdentifier": "com.anonymous.servicemarketplacebf"
+  }
+}
