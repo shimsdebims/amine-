@@ -1,36 +1,36 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { styles } from '../../constants/styles';
-import { useAuth } from '../../context/AuthContext';
+import Button from '../../components/common/Button';
+import { login } from '../../api/authService';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { login } = useAuth();
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) {
       setError('Veuillez remplir tous les champs');
       return;
     }
-    
-    // Simulate login - in a real app, this would be an API call
-    if (email === 'admin@example.com' && password === 'admin123') {
-      login({ email, name: 'Admin' }, true);
-    } else if (email === 'user@example.com' && password === 'user123') {
-      login({ email, name: 'Utilisateur' }, false);
-    } else {
-      setError('Email ou mot de passe incorrect');
+
+    setLoading(true);
+    try {
+      await login(email, password);
+      navigation.replace('Main');
+    } catch (err) {
+      setError(err.message || 'Email ou mot de passe incorrect');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <View style={styles.authContainer}>
       <Text style={styles.authTitle}>Connexion</Text>
-      
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
-      
       <TextInput
         style={styles.authInput}
         placeholder="Email"
@@ -39,7 +39,6 @@ export default function Login({ navigation }) {
         keyboardType="email-address"
         autoCapitalize="none"
       />
-      
       <TextInput
         style={styles.authInput}
         placeholder="Mot de passe"
@@ -47,11 +46,7 @@ export default function Login({ navigation }) {
         onChangeText={setPassword}
         secureTextEntry
       />
-      
-      <TouchableOpacity style={styles.authButton} onPress={handleLogin}>
-        <Text style={styles.authButtonText}>Se connecter</Text>
-      </TouchableOpacity>
-      
+      <Button title="Se connecter" onPress={handleLogin} loading={loading} />
       <TouchableOpacity onPress={() => navigation.navigate('Register')}>
         <Text style={styles.authLink}>Pas de compte? S'inscrire</Text>
       </TouchableOpacity>

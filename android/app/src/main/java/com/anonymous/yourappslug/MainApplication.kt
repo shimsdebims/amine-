@@ -1,4 +1,4 @@
-package com.anonymous.servicemarketplacebf
+package com.anonymous.yourappslug
 
 import android.app.Application
 import android.content.res.Configuration
