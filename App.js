@@ -1,32 +1,22 @@
 import React from 'react';
-import { AppRegistry } from 'react-native';
-import { Provider as PaperProvider } from 'react-native-paper';
-import { AuthProvider } from './src/context/AuthContext';
-import AppNavigator from './src/navigation/AppNavigator';
-import { colors } from './src/constants/colors';
 import { NavigationContainer } from '@react-navigation/native';
-import { Provider as StoreProvider } from 'react-redux';
-import store from './src/store/reducers/store';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { createStackNavigator } from '@react-navigation/stack';
+import LoginScreen from './src/screens/auth/LoginScreen';
+import HomeScreen from './src/screens/user/HomeScreen';
 
-function App() {
+// Create a simple navigation stack
+const Stack = createStackNavigator();
+
+export default function App() {
   return (
-    <StoreProvider store={store}>
-      <NavigationContainer>
-        <AuthProvider>
-          <PaperProvider theme={{
-            colors: {
-              primary: colors.primary,
-              accent: colors.secondary,
-            },
-          }}>
-            <AppNavigator />
-          </PaperProvider>
-        </AuthProvider>
-      </NavigationContainer>
-    </StoreProvider>
+    <NavigationContainer>
+      <PaperProvider>
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Main" component={HomeScreen} />
+        </Stack.Navigator>
+      </PaperProvider>
+    </NavigationContainer>
   );
 }
-
-AppRegistry.registerComponent('servicemarketplace-bf', () => App);
-
-export default App;
