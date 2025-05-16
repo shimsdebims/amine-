@@ -7,15 +7,31 @@ export default function SplashScreen({ navigation }) {
   const { user } = useAuth();
 
   useEffect(() => {
-    // Simulate loading user data
-    setTimeout(() => {
-      if (user) {
-        navigation.replace(user.isAdmin ? 'Admin' : 'Main');
-      } else {
-        navigation.replace('Auth');
+    const timer = setTimeout(() => {
+      try {
+        if (!navigation) return;
+
+        if (user) {
+          const routeName = user.isAdmin ? 'Admin' : 'Main';
+          navigation.reset({
+            index: 0,
+            routes: [{ name: routeName }],
+          });
+        } else {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'Auth' }],
+          });
+        }
+      } catch (error) {
+        console.error('Navigation error:', error);
+        // Fallback navigation
+        navigation?.navigate?.('Auth');
       }
     }, 2000);
-  }, [user]);
+
+    return () => clearTimeout(timer);
+  }, [user, navigation]);
 
   return (
     <View style={styles.container}>

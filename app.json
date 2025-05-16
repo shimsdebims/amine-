@@ -4,7 +4,7 @@
     "slug": "servicemarketplace-bf",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icons/20250514_1439_Amine Prestataire Logo_simple_compose_01jv7kprj9fhwbjvdhth29fqej.png",
+    "icon": "./assets/icons/icon.png",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -22,13 +22,13 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icons/20250514_1439_Amine Prestataire Logo_simple_compose_01jv7kprj9fhwbjvdhth29fqej.png",
+        "foregroundImage": "./assets/icons/icon.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.servicemarketplace.bf"
     },
     "web": {
-      "favicon": "./assets/icons/20250514_1439_Amine Prestataire Logo_simple_compose_01jv7kprj9fhwbjvdhth29fqej.png"
+      "favicon": "./assets/icons/icon.png"
     }
   }
 }
