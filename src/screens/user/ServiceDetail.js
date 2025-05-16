@@ -1,32 +1,154 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
-import { Button } from 'react-native-paper';
+import React, { useState } from 'react';
+import { View, ScrollView, StyleSheet } from 'react-native';
+import { Avatar, Card, Title, Paragraph, Button, Chip, Divider, List } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const ServiceDetail = ({ route, navigation }) => {
-  const { service } = route.params || {};
+  const { service } = route.params;
+  const [selectedService, setSelectedService] = useState(null);
+
+  // Mock available services
+  const availableServices = [
+    {
+      id: '1',
+      name: 'Service Standard',
+      description: 'Service de base pour les besoins essentiels',
+      price: 2500,
+      duration: '1 heure'
+    },
+    {
+      id: '2',
+      name: 'Service Premium',
+      description: 'Service complet avec équipements professionnels',
+      price: 4500,
+      duration: '2 heures'
+    }
+  ];
+
+  // Mock reviews
+  const reviews = [
+    {
+      id: '1',
+      user: 'Sophie K.',
+      rating: 5,
+      comment: 'Excellent service, très professionnel',
+      date: '15 Mai 2024'
+    },
+    {
+      id: '2',
+      user: 'Marc D.',
+      rating: 4,
+      comment: 'Bon service, ponctuel',
+      date: '12 Mai 2024'
+    }
+  ];
+
+  const renderRatingStars = (rating) => {
+    return (
+      <View style={styles.starsContainer}>
+        {[1, 2, 3, 4, 5].map((star) => (
+          <MaterialCommunityIcons
+            key={star}
+            name={star <= rating ? 'star' : 'star-outline'}
+            size={16}
+            color="#FFC107"
+          />
+        ))}
+      </View>
+    );
+  };
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.content}>
-        {service?.image && (
-          <Image 
-            source={{ uri: service.image }} 
-            style={styles.image}
-            resizeMode="cover"
-          />
-        )}
-        <Text style={styles.title}>{service?.name || 'Service Details'}</Text>
-        <Text style={styles.provider}>Provider: {service?.provider?.businessName || 'Service Provider'}</Text>
-        <Text style={styles.description}>{service?.description || 'Service description will appear here'}</Text>
-        <Text style={styles.price}>Price: {service?.price ? `${service.price} FCFA` : 'Contact for price'}</Text>
-        <Text style={styles.duration}>Duration: {service?.duration ? `${service.duration} minutes` : 'To be determined'}</Text>
-        
+      {/* Provider Header */}
+      <Card style={styles.card}>
+        <Card.Content>
+          <View style={styles.header}>
+            <Avatar.Icon size={60} icon="account" style={styles.avatar} />
+            <View style={styles.headerInfo}>
+              <Title>{service.name}</Title>
+              <View style={styles.ratingContainer}>
+                {renderRatingStars(service.rating)}
+                <Paragraph style={styles.ratingText}>
+                  {service.rating} ({service.ordersCompleted} services)
+                </Paragraph>
+              </View>
+            </View>
+          </View>
+          <Paragraph style={styles.description}>{service.description}</Paragraph>
+          
+          <View style={styles.stats}>
+            <Chip icon="clock-check">Disponible</Chip>
+            <Chip icon="map-marker">5 km</Chip>
+            <Chip icon="thumb-up">{Math.round(service.rating * 20)}% satisfaits</Chip>
+          </View>
+        </Card.Content>
+      </Card>
+
+      {/* Available Services */}
+      <Card style={styles.card}>
+        <Card.Content>
+          <Title>Services proposés</Title>
+          {availableServices.map((item) => (
+            <View key={item.id}>
+              <List.Item
+                title={item.name}
+                description={item.description}
+                right={() => (
+                  <View style={styles.servicePrice}>
+                    <Paragraph style={styles.price}>{item.price} FCFA</Paragraph>
+                    <Paragraph style={styles.duration}>{item.duration}</Paragraph>
+                  </View>
+                )}
+                onPress={() => setSelectedService(item)}
+                style={[
+                  styles.serviceItem,
+                  selectedService?.id === item.id && styles.selectedService
+                ]}
+              />
+              <Divider />
+            </View>
+          ))}
+        </Card.Content>
+      </Card>
+
+      {/* Reviews */}
+      <Card style={styles.card}>
+        <Card.Content>
+          <Title>Avis clients</Title>
+          {reviews.map((review) => (
+            <View key={review.id} style={styles.review}>
+              <View style={styles.reviewHeader}>
+                <Paragraph style={styles.reviewUser}>{review.user}</Paragraph>
+                <Paragraph style={styles.reviewDate}>{review.date}</Paragraph>
+              </View>
+              {renderRatingStars(review.rating)}
+              <Paragraph style={styles.reviewComment}>{review.comment}</Paragraph>
+              <Divider />
+            </View>
+          ))}
+        </Card.Content>
+      </Card>
+
+      {/* Booking Button */}
+      <View style={styles.bottomButtons}>
         <Button 
           mode="contained" 
-          onPress={() => navigation.navigate('Booking', { service })}
-          style={styles.button}
+          onPress={() => navigation.navigate('Booking', { 
+            service,
+            selectedService 
+          })}
+          disabled={!selectedService}
+          style={styles.bookButton}
         >
-          Book Now
+          Réserver maintenant
+        </Button>
+        <Button 
+          mode="outlined" 
+          onPress={() => {}}
+          style={styles.chatButton}
+        >
+          Contacter
         </Button>
       </View>
     </ScrollView>
@@ -36,46 +158,90 @@ const ServiceDetail = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f5f5f5',
   },
-  content: {
-    padding: 20,
+  card: {
+    margin: 8,
+    elevation: 4,
   },
-  image: {
-    width: '100%',
-    height: 200,
-    borderRadius: 10,
-    marginBottom: 20,
+  header: {
+    flexDirection: 'row',
+    marginBottom: 16,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
+  headerInfo: {
+    flex: 1,
+    marginLeft: 16,
   },
-  provider: {
-    fontSize: 16,
+  avatar: {
+    backgroundColor: '#FF7F50',
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  starsContainer: {
+    flexDirection: 'row',
+    marginRight: 8,
+  },
+  ratingText: {
     color: '#666',
-    marginBottom: 15,
   },
   description: {
-    fontSize: 16,
-    marginBottom: 20,
-    lineHeight: 24,
+    marginBottom: 16,
+  },
+  stats: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 16,
+  },
+  serviceItem: {
+    paddingVertical: 8,
+  },
+  selectedService: {
+    backgroundColor: '#FFF3E0',
+  },
+  servicePrice: {
+    alignItems: 'flex-end',
   },
   price: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 10,
+    fontWeight: 'bold',
+    color: '#FF7F50',
   },
   duration: {
-    fontSize: 16,
+    fontSize: 12,
     color: '#666',
-    marginBottom: 30,
   },
-  button: {
-    marginTop: 20,
+  review: {
+    marginVertical: 8,
+  },
+  reviewHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 4,
+  },
+  reviewUser: {
+    fontWeight: 'bold',
+  },
+  reviewDate: {
+    color: '#666',
+    fontSize: 12,
+  },
+  reviewComment: {
+    marginVertical: 8,
+  },
+  bottomButtons: {
+    padding: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  bookButton: {
+    flex: 2,
+    marginRight: 8,
+  },
+  chatButton: {
+    flex: 1,
   },
 });
-
 export default ServiceDetail;
 
