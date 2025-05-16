@@ -1,9 +1,29 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 
-// Use localhost for iOS simulator, use your machine IP for Android
-const API_BASE_URL = 'http://localhost:3001/api'; // For iOS
-// const API_BASE_URL = 'http://192.168.1.X:5000/api'; // For Android - replace with your IP
+// Configure API URL based on environment
+let API_BASE_URL;
+
+// Standard port for the backend server
+const PORT = '3001';
+
+// Determine the correct base URL based on platform
+if (Platform.OS === 'ios') {
+  // iOS simulator can use localhost
+  API_BASE_URL = `http://localhost:${PORT}/api`;
+} else if (Platform.OS === 'android') {
+  // Android emulator needs special IP for localhost
+  // Or use your machine's IP for physical devices
+  API_BASE_URL = __DEV__ 
+    ? `http://10.0.2.2:${PORT}/api`  // Android emulator localhost equivalent
+    : `http://192.168.11.106:${PORT}/api`;  // Use your network IP for physical devices
+} else {
+  // Fallback for other platforms
+  API_BASE_URL = `http://localhost:${PORT}/api`;
+}
+
+console.log('API URL:', API_BASE_URL); // Helpful for debugging
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -27,6 +47,7 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.error('Request interceptor error:', error);
     return Promise.reject(error);
   }
 );
@@ -35,6 +56,11 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Network or server errors might not have a response
+    if (error.message === 'Network Error') {
+      console.error('Network error - Check if the server is running and accessible');
+    }
+    
     const { status, data } = error.response || {};
     
     if (status === 401) {
@@ -42,6 +68,8 @@ api.interceptors.response.use(
       console.log('Authentication error, redirecting to login');
       // We'll let the AuthContext handle logout
     }
+    
+    console.error(`API Error [${status || 'Unknown'}]:`, data?.message || error.message);
     
     return Promise.reject({
       ...error,
