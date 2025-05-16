@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "YourAppName",
-    "slug": "your-app-slug",
+    "name": "Service Marketplace BF",
+    "slug": "servicemarketplace-bf",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icons/20250514_1439_Amine Prestataire Logo_simple_compose_01jv7kprj9fhwbjvdhth29fqej.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,17 +18,17 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.yourappslug"
+      "bundleIdentifier": "com.servicemarketplace.bf"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icons/20250514_1439_Amine Prestataire Logo_simple_compose_01jv7kprj9fhwbjvdhth29fqej.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.anonymous.yourappslug"
+      "package": "com.servicemarketplace.bf"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icons/20250514_1439_Amine Prestataire Logo_simple_compose_01jv7kprj9fhwbjvdhth29fqej.png"
     }
   }
 }
