@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
-import { TextInput, Button, Text } from 'react-native-paper';
+import { View, StyleSheet } from 'react-native';
+import { TextInput, Button, Title, Text } from 'react-native-paper';
 
-export default function LoginScreen({ navigation }) {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // For testing, just navigate to Main screen
+    // TODO: Implement proper authentication
     navigation.replace('Main');
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Service Marketplace BF</Text>
+        <Title style={styles.title}>Service Marketplace BF</Title>
         <Text style={styles.subtitle}>Trouvez des services de qualité</Text>
       </View>
 
@@ -28,6 +28,35 @@ export default function LoginScreen({ navigation }) {
           autoCapitalize="none"
           keyboardType="email-address"
         />
+
+        <TextInput
+          label="Mot de passe"
+          value={password}
+          onChangeText={setPassword}
+          mode="outlined"
+          style={styles.input}
+          secureTextEntry
+        />
+
+        <Button 
+          mode="contained" 
+          onPress={handleLogin}
+          style={styles.button}
+        >
+          Se connecter
+        </Button>
+
+        <Button 
+          mode="text" 
+          onPress={() => {}}
+          style={styles.textButton}
+        >
+          Créer un compte
+        </Button>
+      </View>
+    </View>
+  );
+};
 
         <TextInput
           label="Mot de passe"

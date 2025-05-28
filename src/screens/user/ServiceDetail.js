@@ -1,3 +1,92 @@
+import React from 'react';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { Title, Text, Button, Card } from 'react-native-paper';
+
+const ServiceDetail = ({ route, navigation }) => {
+  const { provider } = route.params;
+
+  return (
+    <ScrollView style={styles.container}>
+      <Card style={styles.card}>
+        <Card.Content>
+          <Title>{provider.name}</Title>
+          <Text style={styles.category}>{provider.category}</Text>
+          <Text style={styles.rating}>Note: {provider.rating}/5</Text>
+          
+          <View style={styles.section}>
+            <Title style={styles.sectionTitle}>Services</Title>
+            {provider.services.map((service, index) => (
+              <Text key={index} style={styles.service}>• {service}</Text>
+            ))}
+          </View>
+
+          <View style={styles.section}>
+            <Title style={styles.sectionTitle}>Expérience</Title>
+            <Text>{provider.experience}</Text>
+          </View>
+
+          <View style={styles.section}>
+            <Title style={styles.sectionTitle}>Tarifs</Title>
+            <Text>{provider.price}</Text>
+          </View>
+
+          {provider.certifications && (
+            <View style={styles.section}>
+              <Title style={styles.sectionTitle}>Certifications</Title>
+              {provider.certifications.map((cert, index) => (
+                <Text key={index} style={styles.certification}>• {cert}</Text>
+              ))}
+            </View>
+          )}
+        </Card.Content>
+      </Card>
+
+      <View style={styles.actions}>
+        <Button 
+          mode="contained" 
+          onPress={() => navigation.navigate('Booking', { provider })}
+          style={styles.button}
+        >
+          Réserver
+        </Button>
+        
+        <Button 
+          mode="outlined" 
+          onPress={() => {}}
+          style={styles.button}
+        >
+          Contacter
+        </Button>
+      </View>
+    </ScrollView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
+  card: {
+    margin: 16,
+  },
+  category: {
+    fontSize: 16,
+    color: '#666',
+    marginTop: 4,
+  },
+  rating: {
+    fontSize: 16,
+    color: '#2196F3',
+    marginTop: 8,
+  },
+  section: {
+    marginTop: 16,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    
+
 import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Avatar, Card, Title, Paragraph, Button, Chip, Divider, List } from 'react-native-paper';
